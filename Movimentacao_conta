@@ -1,0 +1,123 @@
+menu = """
+
+[d] Depositar
+[s] Sacar
+[e] Extrato
+[q] Sair
+
+=> """
+
+
+saldo = 0
+limite = 500
+extrato = ""
+numero_saques = 0
+LIMITE_SAQUES = 3 
+list_extrato = ""
+
+
+
+def executa():
+
+    while True:        
+        opcao = input(f"{menu} Escolha a operação: ")
+
+        if opcao == "d":
+             valor = float(input("Informe o valor do depósito: "))         
+             deposito(valor)
+        
+        elif opcao == "s":
+            valor = float(input("Informe o valor do saque: "))
+            saque(valor)
+
+        elif opcao == "e":
+            get_extrato()
+
+        elif opcao == "q":
+            break
+
+        else:
+             print("Operação inválida, por favor selecione novamente a operação desejada.")
+
+
+##################### SAQUE ######################        
+
+## efetua o saque 
+def saque(valor):
+    global saldo
+    if (limite_operacoes_saques()) and limite_valor_saque(valor):
+        if(saldo >= valor): 
+            saldo -= valor
+            set_extrato(valor,"saque")
+            print("Saque relalizado com sucesso.")
+            return True    
+        else:
+            print("Operação falhou! seu saldo é insuficiente.")             
+    else:        
+        return False
+    
+    
+## método responsável em verificar se não exedeu o limite diário de saques
+def limite_operacoes_saques():
+    global LIMITE_SAQUES, numero_saques
+    if LIMITE_SAQUES > numero_saques:
+        numero_saques += 1
+        print(numero_saques)
+        return True
+    else:
+        print("Operação falhou! Exedeu o número de tentativas para esta operação.")
+        return False
+
+
+
+## Método responsável em vereficar se o saque execeu o limite máximo.
+def limite_valor_saque(valor):
+    if limite < valor:
+        print(f"Operação falhou! O valor do saque excede o limite de {limite:.2f}.")
+        return False
+    else:
+        return True
+    
+
+
+######################## DEPÓSITO ############################
+
+def deposito(valor):   
+    global saldo
+    if valor > 0:     
+        saldo += valor
+        set_extrato(valor,"deposito")
+        print(f"Depósito realisado com sucesso no valor de {valor:.2f}")
+
+
+
+
+########################### EXTRATO ###########################
+
+## Armazena as transações na lista list_extrato
+def set_extrato(valor, operacao):
+    global list_extrato  
+
+    match operacao:
+        case "deposito":          
+              list_extrato += str(f"Depósito: R$ {valor:.2f}\n")                
+        case "saque":
+              list_extrato += str(f"Saque: R$ {valor:.2f}\n")
+          
+                   
+   
+## Informa o extrato
+def get_extrato():
+    global list_extrato, saldo
+   
+    print("\n================ EXTRATO ================")
+    if  len(f"{list_extrato}")  == 0:
+        print("Não foram realizadas movimentações.")
+    else:
+         print(list_extrato)
+         print(f"\nSaldo: R$ {saldo:.2f}")
+    print("==========================================")
+
+
+
+executa()
