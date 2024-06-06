@@ -100,9 +100,9 @@ def set_extrato(valor, operacao):
 
     match operacao:
         case "deposito":          
-              list_extrato += str(f" Depósito: R$ {valor:.2f}\n")                
+              list_extrato += str(f"Depósito: R$ {valor:.2f}\n")                
         case "saque":
-              list_extrato += str(f" Saque: R$ {valor:.2f}\n")
+              list_extrato += str(f"Saque: R$ {valor:.2f}\n")
           
                    
    
