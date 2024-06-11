@@ -1,3 +1,5 @@
+import textwrap
+
 menu = """
 
 [d] Depositar
@@ -14,10 +16,11 @@ extrato = ""
 numero_saques = 0
 LIMITE_SAQUES = 3 
 list_extrato = ""
+list_usuario = []
 
 
 
-def executa():
+def executa(self):
 
     while True:        
         opcao = input(f"{menu} Escolha a operação: ")
@@ -31,7 +34,7 @@ def executa():
             saque(valor)
 
         elif opcao == "e":
-            get_extrato()
+            get_extrato(saldo)
 
         elif opcao == "q":
             break
@@ -39,11 +42,22 @@ def executa():
         else:
              print("Operação inválida, por favor selecione novamente a operação desejada.")
 
+################### usuário ########################
+
+# cadastra o usuário no banco
+def set_usuario(self,nome="none",dt_nacimento="none",cpf="none",endereco="none"):
+    global list_usuario
+    list_usuario = [[nome, dt_nacimento, cpf, endereco]]
+
+
+
+
+
 
 ##################### SAQUE ######################        
 
 ## efetua o saque 
-def saque(valor):
+def saque(self,valor: "0"):
     global saldo
     if (limite_operacoes_saques()) and limite_valor_saque(valor):
         if(saldo >= valor): 
@@ -58,7 +72,7 @@ def saque(valor):
     
     
 ## método responsável em verificar se não exedeu o limite diário de saques
-def limite_operacoes_saques():
+def limite_operacoes_saques(self):
     global LIMITE_SAQUES, numero_saques
     if LIMITE_SAQUES > numero_saques:
         numero_saques += 1
@@ -71,7 +85,7 @@ def limite_operacoes_saques():
 
 
 ## Método responsável em vereficar se o saque execeu o limite máximo.
-def limite_valor_saque(valor):
+def limite_valor_saque(self,valor):
     if limite < valor:
         print(f"Operação falhou! O valor do saque excede o limite de {limite:.2f}.")
         return False
@@ -82,7 +96,7 @@ def limite_valor_saque(valor):
 
 ######################## DEPÓSITO ############################
 
-def deposito(valor):   
+def deposito(self,valor):   
     global saldo
     if valor > 0:     
         saldo += valor
@@ -95,7 +109,7 @@ def deposito(valor):
 ########################### EXTRATO ###########################
 
 ## Armazena as transações na lista list_extrato
-def set_extrato(valor, operacao):
+def set_extrato(self,valor,saldo, extrato="", operacao="nome"):
     global list_extrato  
 
     match operacao:
@@ -103,12 +117,15 @@ def set_extrato(valor, operacao):
               list_extrato += str(f"Depósito: R$ {valor:.2f}\n")                
         case "saque":
               list_extrato += str(f"Saque: R$ {valor:.2f}\n")
-          
+        case "none":
+            print("")
+
+
                    
    
 ## Informa o extrato
-def get_extrato():
-    global list_extrato, saldo
+def get_extrato(self,valor,saldo="0", extrato="", operacao="nome"):
+    global list_extrato
    
     print("\n================ EXTRATO ================")
     if  len(f"{list_extrato}")  == 0:
