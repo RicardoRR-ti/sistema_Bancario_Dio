@@ -1,8 +1,13 @@
 import textwrap
 
+
+
+
 menu = """
 
-
+[u] Novo Usuário
+[c] Nova Conta
+[x] Dados da conta
 [d] Depositar
 [s] Sacar
 [e] Extrato
@@ -17,41 +22,123 @@ extrato = ""
 numero_saques = 0
 LIMITE_SAQUES = 3 
 list_extrato = ""
+list_endereco = []
 list_usuario = []
+lista_usuario2 = []
+list_conta = []
 
 
 
-def executa(self):
+
+def executa():
 
     while True:        
         opcao = input(f"{menu} Escolha a operação: ")
-
         if opcao == "d":
              valor = float(input("Informe o valor do depósito: "))         
              deposito(valor)
-        
+        elif opcao == "u":
+             novo_usuario()
+        elif opcao == "c":
+            cria_conta()        
         elif opcao == "s":
             valor = float(input("Informe o valor do saque: "))
             saque(valor)
-
+        elif opcao == "x":
+            lista_dados_babncarios()
         elif opcao == "e":
             get_extrato(saldo)
-
         elif opcao == "q":
             break
-
         else:
              print("Operação inválida, por favor selecione novamente a operação desejada.")
 
-################### usuário ########################
+
+################### Listar Dados  Bancários#####################
+
+def lista_dados_babncarios():
+    global list_usuario
+    if len(list_usuario) == 0:
+        print("Dados inexistente, favor cadastre os dados de usuário...\n")
+    else:
+        mostra_usuario()
+        get_contas(lista_usuario2)
+
+
+
+################### usuário ########################    
 
 # cadastra o usuário no banco
-def set_usuario(self,nome="none",dt_nacimento="none",cpf="none",endereco="none"):
-    global list_usuario
-    list_usuario = [[nome, dt_nacimento, cpf, endereco]]
+def novo_usuario():
+    global list_usuario, list_endereco
+    
+    print("*** Informe os dados pessoais. ***\n")
+    list_usuario.append(input("Informe o nome do usuário:\t"))  
+    list_usuario.append(input("Informe a data de nascimento:\t"))
+    list_usuario.append(input("Informe o CPF:\t")) 
+
+    print("\n*** Informe o seu endereço ***\n")
+    list_endereco.append(input("Informe o nome da sua rua:\t"))
+    list_endereco.append(input("Informe o numero da sua casa:\t"))
+    list_endereco.append(input("Informe o bairro:\t"))
+    list_endereco.append(input("Informe a sua cidade\t"))
+
+    mostra_usuario()
+
+#Monstra os dados do usuário
+def mostra_usuario():
+    global list_endereco, list_usuario
+
+    print("\n***************** DADOS DO USUÁRIO ******************")
+    print(f"Nome:\t {list_usuario[0]}")
+    print(f"Data de Nascimento:\t {list_usuario[1]}")
+    print(f"CPF:\t {list_usuario[2]}\n") 
+    print("\n*** EMDEREÇO ***")
+    print(f"Rua:\t {list_endereco[0]}, {list_endereco[1]}, {list_endereco[2]}, {list_endereco[3]}\n")   
+    print("*******************************************************\n") 
 
 
 
+
+#################### CONTA ########################
+
+#Cria a conta do usuário
+def cria_conta():
+    global list_conta,  lista_usuario2
+    numero_conta = 1
+    indice = int(0) 
+    numero_agencia = "0001"    
+    continua = True
+  
+
+
+    while continua:
+
+         list_conta = [numero_conta, numero_agencia,list_usuario[2]]      
+         lista_usuario2.append(list_conta)
+      
+         print("Conta criada con sucesso.\n")         
+
+         numero_conta += 1
+         indice += 1
+
+         continua = input("\n ***** Para criar uma nova conta digite S senão N  *****")
+
+         if continua == "s":
+             continua = True
+         else:
+             continua = False           
+             get_contas(lista_usuario2)
+
+
+#Lista as contas do usuário
+def get_contas(lista = []):
+  
+  for indice in range(len(lista)):
+    print("\n***************************************\n")
+    print(f"Numero da conta:\t{lista[indice][0]}")
+    print(f"Agencia:\t\t{lista[indice][1]}")
+    print(f"Cpf do usuário:\t\t{lista[indice][2]}")
 
 
 
